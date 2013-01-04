@@ -19,4 +19,10 @@ function getToken(text, value, type) {
     assert.equal(lexer.nextToken(), null);
 }
 
+// Name
 
+getToken("foo", "foo", TokenType.Name);
+getToken("foo123", "foo123", TokenType.Name);
+getToken("foo_bar", "foo_bar", TokenType.Name);
+getToken("_foo", "_foo", TokenType.Name);
+getToken("   foo    ", "foo", TokenType.Name);

@@ -10,10 +10,13 @@ assert.equal(typeof simplerules.Lexer, 'function');
 var Lexer = simplerules.Lexer;
 var TokenType = simplerules.TokenType;
 
-var lexer = new simplerules.Lexer("foo");
-var token = lexer.nextToken();
-assert.ok(token);
-assert.equal(token.value, "foo");
-assert.equal(token.type, TokenType.Name);
-assert.equal(lexer.nextToken(), null);
+function getToken(text, value, type) {
+    var lexer = new simplerules.Lexer(text);
+    var token = lexer.nextToken();
+    assert.ok(token);
+    assert.equal(token.value, value);
+    assert.equal(token.type, type);
+    assert.equal(lexer.nextToken(), null);
+}
+
 

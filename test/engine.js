@@ -47,3 +47,15 @@ engine.addTask(function () { value = 1; });
 engine.runSync();
 assert.equal(value, 1);
 
+// Add tasks
+
+var value = 0;
+
+function makeTask(n) { return function() { value += n; }; };
+
+for (var k = 1; k <= 3; k++)
+    engine.addTask(makeTask(k));
+
+engine.runSync();
+
+assert.equal(value, 6);

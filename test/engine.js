@@ -22,3 +22,10 @@ item.setProperty('name', 'Adam');
 assert.equal(value, 1);
 assert.equal(obj.name, 'Adam');
 assert.equal(item.getProperty('name'), 'Adam');
+
+var value = null;
+
+engine.onAddObject(function (item) { value = item.object; });
+engine.addObject(4);
+
+assert.equal(value, 4);

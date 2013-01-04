@@ -21,3 +21,4 @@ item.onSetProperty('name', function () { value = 1; });
 item.setProperty('name', 'Adam');
 assert.equal(value, 1);
 assert.equal(obj.name, 'Adam');
+assert.equal(item.getProperty('name'), 'Adam');

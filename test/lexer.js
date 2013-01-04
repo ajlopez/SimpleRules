@@ -26,3 +26,8 @@ getToken("foo123", "foo123", TokenType.Name);
 getToken("foo_bar", "foo_bar", TokenType.Name);
 getToken("_foo", "_foo", TokenType.Name);
 getToken("   foo    ", "foo", TokenType.Name);
+
+// Integer
+
+getToken("123", "123", TokenType.Integer);
+getToken("   123  ", "123", TokenType.Integer);

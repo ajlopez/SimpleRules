@@ -37,6 +37,8 @@ function Rule() {
     }
 }
 
+// Fire rule
+
 var engine = simplerules.createEngine();
 
 engine.addRule(new Rule());
@@ -47,4 +49,17 @@ engine.addObject(p);
 engine.runSync();
 
 assert.equal(p.hasFever, true);
+
+// Don't fire rule
+
+var engine = simplerules.createEngine();
+
+engine.addRule(new Rule());
+
+var p = { temperature: 37 };
+
+engine.addObject(p);
+engine.runSync();
+
+assert.equal(p.hasFever, undefined);
 

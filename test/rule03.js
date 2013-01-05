@@ -1,11 +1,12 @@
 
 var simplerules = require('../'),
     assert = require('assert');
-
+    
 /*
     Rule:
 
     if
+        p is Person
         p.temperature >= 38
     then
         p.hasFever = true
@@ -19,6 +20,9 @@ function Rule() {
         engine.onAddObject(onAddObject);
 
         function onAddObject (item) {
+            if (!(item.object instanceof Person))
+                return;
+
             var state = { p: item };
             engine.addTask(makeTaskTemperature(state));
         }
@@ -70,13 +74,32 @@ function Rule() {
     }
 }
 
-// Fire rule
+// Person 'class'
+
+function Person() {
+}
+
+// Don't fire rule if not a Person
 
 var engine = simplerules.createEngine();
 
 engine.addRule(new Rule());
 
 var p = { temperature: 38 };
+
+engine.addObject(p);
+engine.runSync();
+
+assert.equal(p.hasFever, undefined);
+
+// Fire rule
+
+var engine = simplerules.createEngine();
+
+engine.addRule(new Rule());
+
+var p = new Person();
+p.temperature = 38;
 
 engine.addObject(p);
 engine.runSync();
@@ -89,7 +112,8 @@ var engine = simplerules.createEngine();
 
 engine.addRule(new Rule());
 
-var p = { temperature: 37 };
+var p = new Person();
+p.temperature = 37;
 
 engine.addObject(p);
 engine.runSync();
@@ -102,7 +126,7 @@ var engine = simplerules.createEngine();
 
 engine.addRule(new Rule());
 
-var p = { };
+var p = new Person();
 
 var item = engine.addObject(p);
 engine.runSync();

@@ -2,37 +2,6 @@
 var simplerules = require('../'),
     assert = require('assert');
 
-function RuleStep(engine, state) {
-    var self = this;
-    var fired = false;
-    var backtrack = null;
-
-    this.makeTask = function () {
-        return function () {
-            self.run();
-            self.firstRun(state);
-        };
-    };
-
-    this.run = function () {
-        if (this.check(state)) {
-            if (!fired) {
-                fired = true;
-                backtrack = this.makeBacktrack(state);
-                var next = this.makeNextTask(state);
-                if (next)
-                    engine.addTask(next);
-            }
-        }
-        else if (fired) {
-            fired = false;
-            if (backtrack)
-                backtrack();
-            backtrack = null;
-        }
-    };
-}
-
 /*
     Rule:
 
@@ -51,7 +20,7 @@ function Rule() {
 
         function onAddObject (item) {
             var state = { p: item };
-            var step = new RuleStep(engine, state);
+            var step = engine.createStep(state);
             step.check = function (state) { return state.p.object.temperature >= 38 };
             step.makeNextTask = makeTaskHasFever;
             step.makeBacktrack = makeBacktrackHasFever;

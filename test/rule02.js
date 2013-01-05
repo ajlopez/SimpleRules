@@ -28,19 +28,15 @@ function Rule() {
                 var fired = false;
                 var backtrack = null;
 
-                if (checkTemperature()) {
-                    fired = true;
-                    backtrack = makeBacktrackHasFever(state);
-                    engine.addTask(makeTaskHasFever(state));
-                }
+                doCheck();
 
-                state.p.onSetProperty('temperature', listenTemperature);
+                state.p.onSetProperty('temperature', doCheck);
 
                 function checkTemperature() {
                     return state.p.object.temperature >= 38;
                 }
 
-                function listenTemperature() {
+                function doCheck() {
                     if (checkTemperature()) {
                         if (!fired) {
                             fired = true;
@@ -64,7 +60,7 @@ function Rule() {
         }
 
         function makeBacktrackHasFever(state) {
-            var original = state.p.temperature;
+            var original = state.p.hasFever;
 
             return function () {
                 engine.addTask(function () {
@@ -124,3 +120,10 @@ item.setProperty('temperature', 36);
 assert.equal(p.hasFever, true);
 engine.runSync();
 assert.equal(p.hasFever, undefined);
+
+// New fire with new value
+
+item.setProperty('temperature', 38);
+assert.equal(p.hasFever, undefined);
+engine.runSync();
+assert.equal(p.hasFever, true);

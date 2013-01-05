@@ -26,9 +26,11 @@ function Rule() {
         function makeTaskTemperature(state) {
             return function () {
                 var fired = false;
+                var backtrack = null;
 
                 if (checkTemperature()) {
                     fired = true;
+                    backtrack = makeBacktrackHasFever(state);
                     engine.addTask(makeTaskHasFever(state));
                 }
 
@@ -42,12 +44,14 @@ function Rule() {
                     if (checkTemperature()) {
                         if (!fired) {
                             fired = true;
+                            backtrack = makeBacktrackHasFever(state);
                             engine.addTask(makeTaskHasFever(state));
                         }
                     }
                     else if (fired) {
                         fired = false;
-                        // do backtracking
+                        backtrack();
+                        backtrack = null;
                     }
                 }
             };
@@ -56,6 +60,15 @@ function Rule() {
         function makeTaskHasFever(state) {
             return function () {
                 state.p.setProperty('hasFever', true);
+            };
+        }
+
+        function makeBacktrackHasFever(state) {
+            var original = state.p.temperature;
+
+            return function () {
+                engine.addTask(function () {
+                    state.p.setProperty('hasFever', original) });
             };
         }
     }
@@ -104,3 +117,10 @@ item.setProperty('temperature', 38);
 assert.equal(p.hasFever, undefined);
 engine.runSync();
 assert.equal(p.hasFever, true);
+
+// Backtrack with new value
+
+item.setProperty('temperature', 36);
+assert.equal(p.hasFever, true);
+engine.runSync();
+assert.equal(p.hasFever, undefined);

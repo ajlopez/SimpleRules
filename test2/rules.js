@@ -39,3 +39,15 @@ exports['define and apply action'] = function (test) {
     test.equal(model.temperature, 37);
     test.equal(model.hasFever, true);
 }
+
+exports['define and apply function as action'] = function (test) {
+    var r = rule({ name: 'rule1' });
+    r.addAction(function (model) { model.hasFever = true; });
+    
+    var model = { temperature: 37 };
+    
+    r.doActions(model);
+    
+    test.equal(model.temperature, 37);
+    test.equal(model.hasFever, true);
+}

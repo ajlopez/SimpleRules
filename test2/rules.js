@@ -28,3 +28,14 @@ exports['define and apply false condition'] = function (test) {
     test.strictEqual(r.checkConditions(model), false);
 }
 
+exports['define and apply action'] = function (test) {
+    var r = rule({ name: 'rule1' });
+    r.addAction({ set: 'hasFever', value: true });
+    
+    var model = { temperature: 37 };
+    
+    r.doActions(model);
+    
+    test.equal(model.temperature, 37);
+    test.equal(model.hasFever, true);
+}

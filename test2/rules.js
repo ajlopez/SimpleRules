@@ -11,17 +11,20 @@ exports['create rule with data'] = function (test) {
 }
 
 exports['define and apply condition'] = function (test) {
-    test.async();
-    
     var r = rule({ name: 'rule1' });
     r.addCondition({ name: 'temperature', value: 37 });
     
     var model = { temperature: 37 };
     
-    r.checkConditions(model, function (err, result) {
-        test.ok(!err);
-        test.strictEqual(result, true);
-        test.done();
-    });
+    test.strictEqual(r.checkConditions(model), true);
+}
+
+exports['define and apply false condition'] = function (test) {
+    var r = rule({ name: 'rule1' });
+    r.addCondition({ name: 'temperature', value: 37 });
+    
+    var model = { temperature: 36 };
+    
+    test.strictEqual(r.checkConditions(model), false);
 }
 

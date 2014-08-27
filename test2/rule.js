@@ -12,7 +12,7 @@ exports['create rule with data'] = function (test) {
 
 exports['define and apply condition'] = function (test) {
     var r = rule({ name: 'rule1' });
-    r.addCondition({ name: 'temperature', value: 37 });
+    r.condition({ name: 'temperature', value: 37 });
     
     var model = { temperature: 37 };
     
@@ -21,7 +21,7 @@ exports['define and apply condition'] = function (test) {
 
 exports['define and apply function as condition'] = function (test) {
     var r = rule({ name: 'rule1' });
-    r.addCondition(function (model) { return model.temperature && model.temperature >= 37 });
+    r.condition(function (model) { return model.temperature && model.temperature >= 37 });
     
     var model = { temperature: 37 };
     
@@ -30,7 +30,7 @@ exports['define and apply function as condition'] = function (test) {
 
 exports['define and apply false condition'] = function (test) {
     var r = rule({ name: 'rule1' });
-    r.addCondition({ name: 'temperature', value: 37 });
+    r.condition({ name: 'temperature', value: 37 });
     
     var model = { temperature: 36 };
     
@@ -39,7 +39,7 @@ exports['define and apply false condition'] = function (test) {
 
 exports['define and apply action'] = function (test) {
     var r = rule({ name: 'rule1' });
-    r.addAction({ set: 'hasFever', value: true });
+    r.action({ set: 'hasFever', value: true });
     
     var model = { temperature: 37 };
     
@@ -51,7 +51,7 @@ exports['define and apply action'] = function (test) {
 
 exports['define and apply function as action'] = function (test) {
     var r = rule({ name: 'rule1' });
-    r.addAction(function (model) { model.hasFever = true; });
+    r.action(function (model) { model.hasFever = true; });
     
     var model = { temperature: 37 };
     

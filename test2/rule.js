@@ -60,3 +60,15 @@ exports['define and apply function as action'] = function (test) {
     test.equal(model.temperature, 37);
     test.equal(model.hasFever, true);
 }
+
+exports['define and run rule'] = function (test) {
+    var model = { temperature: 37 };
+    
+    var r = rule({ name: 'rule1' })
+        .condition({ name: 'temperature', value: 37 })
+        .action({ set: 'hasFever', value: true })
+        .run(model);
+    
+    test.equal(model.temperature, 37);
+    test.equal(model.hasFever, true);
+}

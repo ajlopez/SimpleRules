@@ -73,6 +73,17 @@ exports['define and run rule'] = function (test) {
     test.equal(model.hasFever, true);
 }
 
+exports['define and run rule setting undefined value'] = function (test) {
+    var model = { };
+    
+    var r = rule({ name: 'rule1' })
+        .condition({ name: 'temperature', value: undefined })
+        .action({ set: 'temperature', value: 'unknown' })
+        .run(model);
+    
+    test.equal(model.temperature, 'unknown');
+}
+
 exports['define and run a failed rule'] = function (test) {
     var model = { temperature: 36 };
     

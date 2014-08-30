@@ -19,6 +19,15 @@ exports['define and apply condition'] = function (test) {
     test.strictEqual(r.checkConditions(model), true);
 }
 
+exports['define and apply condition with operator'] = function (test) {
+    var r = rule({ name: 'rule1' });
+    r.condition({ name: 'temperature', value: 37, operator: '>=' });
+    
+    var model = { temperature: 40 };
+    
+    test.strictEqual(r.checkConditions(model), true);
+}
+
 exports['define and apply function as condition'] = function (test) {
     var r = rule({ name: 'rule1' });
     r.condition(function (model) { return model.temperature && model.temperature >= 37 });

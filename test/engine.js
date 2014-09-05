@@ -1,61 +1,55 @@
 
-var simplerules = require('../'),
-    assert = require('assert');
+var engine = require('..').engine;
+
+exports['create engine'] = function (test) {
+    var eng = engine({ name: 'engine1', title: 'Engine 1' });
     
-// createEngine is defined
+    test.ok(eng);
+    test.equal(eng.name, 'engine1');
+    test.equal(eng.title, 'Engine 1');
+}
 
-assert.ok(simplerules.createEngine);
-assert.equal(typeof simplerules.createEngine, 'function');
+exports['add rule'] = function (test) {
+    var eng = engine({});
+    
+    var rule = eng.rule({ name: 'rule1', title: 'Rule 1' });
+    
+    test.ok(rule);
+    test.equal(rule.name, 'rule1');
+    test.equal(rule.title, 'Rule 1');
+}
 
-var engine = simplerules.createEngine();
-assert.ok(engine);
+exports['add and run rule on model'] = function (test) {
+    var model = { temperature: 37 };
+    
+    var eng = engine({});
+    
+    eng.rule({ name: 'rule1', title: 'Rule 1' })
+        .condition({ name: 'temperature', value: 37 })
+        .action({ set: 'hasFever', value: true });
+        
+    eng.run(model);
+    
+    test.equal(model.temperature, 37);
+    test.equal(model.hasFever, true);
+}
 
-var obj = { };
-var item = engine.addObject(obj);
-
-// Is defined
-
-assert.equal(item.isDefined('name'), false);
-
-// On set property
-
-var value = 0;
-
-item.onSetProperty('name', function () { value = 1; });
-item.setProperty('name', 'Adam');
-assert.equal(value, 1);
-assert.equal(obj.name, 'Adam');
-
-// Get property
-
-assert.equal(item.getProperty('name'), 'Adam');
-
-// On add object
-
-var value = null;
-
-engine.onAddObject(function (item) { value = item.object; });
-engine.addObject(4);
-
-assert.equal(value, 4);
-
-// Add task and run sync
-
-var value = null;
-
-engine.addTask(function () { value = 1; });
-engine.runSync();
-assert.equal(value, 1);
-
-// Add tasks
-
-var value = 0;
-
-function makeTask(n) { return function() { value += n; }; };
-
-for (var k = 1; k <= 3; k++)
-    engine.addTask(makeTask(k));
-
-engine.runSync();
-
-assert.equal(value, 6);
+exports['two rules and run on model'] = function (test) {
+    var model = { temperature: 40 };
+    
+    var eng = engine({});
+    
+    eng.rule({ name: 'rule1', title: 'Rule 1' })
+        .condition({ name: 'hasFever', value: true })
+        .action({ set: 'inBed', value: true });
+        
+    eng.rule({ name: 'rule2', title: 'Rule 2' })
+        .condition({ name: 'temperature', value: 37, operator: '>=' })
+        .action({ set: 'hasFever', value: true });
+        
+    eng.run(model);
+    
+    test.equal(model.temperature, 40);
+    test.equal(model.hasFever, true);
+    test.equal(model.inBed, true);
+}

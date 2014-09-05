@@ -1,6 +1,6 @@
 # SimpleRules
 
-Rule engine implementation using Rete-like algorithm.
+Simple Rule engine implementation in JavaScript.
 
 ## Installation
 
@@ -20,6 +20,7 @@ var simplerules = require('simplerules');
 ```
 
 TBD
+
 ## Development
 
 ```
@@ -36,6 +37,10 @@ TBD
 ## To do
 
 - Samples
+
+## Versions
+
+- 0.0.1 Published
 
 ## Contribution
 

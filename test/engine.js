@@ -25,8 +25,8 @@ exports['add and run rule on model'] = function (test) {
     var eng = engine({});
     
     eng.rule({ name: 'rule1', title: 'Rule 1' })
-        .condition({ name: 'temperature', value: 37 })
-        .action({ set: 'hasFever', value: true });
+        .when("model.temperature == 37")
+        .then("model.hasFever = true");
         
     eng.run(model);
     
@@ -40,12 +40,12 @@ exports['two rules and run on model'] = function (test) {
     var eng = engine({});
     
     eng.rule({ name: 'rule1', title: 'Rule 1' })
-        .condition({ name: 'hasFever', value: true })
-        .action({ set: 'inBed', value: true });
+        .when("model.hasFever == true")
+        .then("model.inBed = true");
         
     eng.rule({ name: 'rule2', title: 'Rule 2' })
-        .condition({ name: 'temperature', value: 37, operator: '>=' })
-        .action({ set: 'hasFever', value: true });
+        .when("model.temperature >= 37")
+        .then("model.hasFever = true");
         
     eng.run(model);
     
@@ -53,3 +53,4 @@ exports['two rules and run on model'] = function (test) {
     test.equal(model.hasFever, true);
     test.equal(model.inBed, true);
 }
+

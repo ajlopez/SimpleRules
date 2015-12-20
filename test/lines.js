@@ -31,3 +31,12 @@ exports['parse text with two lines and carriage return'] = function (test) {
     ]);
 };
 
+exports['parse text with two lines skipping line comment'] = function (test) {
+    var result = lines("rule\n  # a line comment\n  when");
+    
+    test.deepEqual(result, [ 
+        { indent: 0, text: "rule" },
+        { indent: 2, text: "when" }
+    ]);
+};
+

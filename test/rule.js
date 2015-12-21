@@ -115,3 +115,19 @@ exports['define and run a failed rule'] = function (test) {
     test.equal(typeof model.hasFever, 'undefined');
 }
 
+exports['define when and then with multiple entries'] = function (test) {
+    var model = { temperature: 40, age: 40 };
+    
+    var r = rule({ name: 'rule1' })
+        .when("model.temperature >= 39")
+        .when("model.age >= 12")
+        .then("model.fever = true")
+        .then("model.critical = true")
+        .run(model);
+    
+    test.equal(model.temperature, 40);
+    test.equal(model.age, 40);
+    test.equal(model.fever, true);
+    test.equal(model.critical, true);
+}
+

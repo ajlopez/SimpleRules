@@ -131,3 +131,33 @@ exports['define when and then with multiple entries'] = function (test) {
     test.equal(model.critical, true);
 }
 
+exports['define when and then with multiple entries without fire'] = function (test) {
+    var model = { temperature: 40, age: 11 };
+    
+    var r = rule({ name: 'rule1' })
+        .when("model.temperature >= 39")
+        .when("model.age >= 12")
+        .then("model.fever = true")
+        .then("model.critical = true")
+        .run(model);
+    
+    test.equal(model.temperature, 40);
+    test.equal(model.age, 11);
+    test.strictEqual(model.fever, undefined);
+    test.strictEqual(model.critical, undefined);
+}
+
+exports['define when and then with array'] = function (test) {
+    var model = { temperature: 40, age: 40 };
+    
+    var r = rule({ name: 'rule1' })
+        .when(["model.temperature >= 39", "model.age >= 12"])
+        .then(["model.fever = true", "model.critical = true"])
+        .run(model);
+    
+    test.equal(model.temperature, 40);
+    test.equal(model.age, 40);
+    test.equal(model.fever, true);
+    test.equal(model.critical, true);
+}
+

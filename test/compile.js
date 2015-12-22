@@ -12,6 +12,9 @@ exports['compile and run simple rule'] = function (test) {
     
     var engine = simplerules.compile(text);
     
+    test.ok(engine.rules);
+    test.equal(engine.rules.length, 1);
+    
     var model = { temperature: 38 };
     
     engine.run(model);

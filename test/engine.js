@@ -51,6 +51,22 @@ exports['add and run rule on model and facts'] = function (test) {
     test.equal(facts.hasFever, true);
 }
 
+exports['add and run rule using facts in condition'] = function (test) {
+    var model = { age: 80 };
+    var facts = { hasFever: true };
+    
+    var eng = engine({});
+    
+    eng.rule({ name: 'rule1', title: 'Rule 1' })
+        .when("model.age > 70")
+        .when("facts.hasFever")
+        .then("facts.critical = true");
+        
+    eng.run(model, facts);
+    
+    test.equal(facts.critical, true);
+}
+
 exports['two rules and run on model'] = function (test) {
     var model = { temperature: 40 };
     

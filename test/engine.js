@@ -34,6 +34,23 @@ exports['add and run rule on model'] = function (test) {
     test.equal(model.hasFever, true);
 }
 
+exports['add and run rule on model and facts'] = function (test) {
+    var model = { temperature: 37 };
+    var facts = { };
+    
+    var eng = engine({});
+    
+    eng.rule({ name: 'rule1', title: 'Rule 1' })
+        .when("model.temperature == 37")
+        .then("facts.hasFever = true");
+        
+    eng.run(model, facts);
+    
+    test.equal(model.temperature, 37);
+    test.strictEqual(model.hasFever, undefined);
+    test.equal(facts.hasFever, true);
+}
+
 exports['two rules and run on model'] = function (test) {
     var model = { temperature: 40 };
     
